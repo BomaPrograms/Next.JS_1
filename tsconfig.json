@@ -16,6 +16,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/api/submitForm.js", "pages/Form.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/api/submitForm.js", "pages/Form.js", "pages/index.js", "pages/_document.js", "pages/_app.js"],
   "exclude": ["node_modules"]
 }

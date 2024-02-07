@@ -12,9 +12,7 @@ const Form = () => {
 
   const [emailError, setEmailError] = useState("");
 
-  const handleInputChange = (e: {
-    target: { name: string; value: string };
-  }) => {
+  const handleInputChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
 
     if (e.target.name === "email" && !EMAIL_REGEX.test(e.target.value)) {
@@ -24,7 +22,7 @@ const Form = () => {
     }
   };
 
-  const handleSubmit = async (e: { preventDefault: () => void }) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Validate form fields
