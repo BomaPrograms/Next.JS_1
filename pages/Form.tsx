@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useRouter } from "next/router";
 
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
@@ -13,9 +12,9 @@ const Form = () => {
 
   const [emailError, setEmailError] = useState("");
 
-  const router = useRouter();
-
-  const handleInputChange = (e: { target: { name: string; value: string; }; }) => {
+  const handleInputChange = (e: {
+    target: { name: string; value: string };
+  }) => {
     setForm({ ...form, [e.target.name]: e.target.value });
 
     if (e.target.name === "email" && !EMAIL_REGEX.test(e.target.value)) {
@@ -25,19 +24,21 @@ const Form = () => {
     }
   };
 
-  const handleSubmit = async (e: { preventDefault: () => void; }) => {
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
+    // Validate form fields
     if (!form.name || !form.age || !form.dob || !form.email) {
-        alert("please fill out all the fields before submitting.");
-        return;
+      alert("Please fill in all required fields.");
+      return;
     }
 
     if (!EMAIL_REGEX.test(form.email)) {
-        setEmailError("Please enter a valid email address.");
-        return;
+      setEmailError("Please enter a valid email address.");
+      return;
     }
 
+    // Send form data to API route
     const response = await fetch("/api/submitForm", {
       method: "POST",
       headers: {
@@ -47,9 +48,11 @@ const Form = () => {
     });
 
     if (response.ok) {
-      router.push("/success");
+      alert("Form submitted successfully!");
+      setForm({ name: "", age: "", dob: "", email: "" });
+      setEmailError("");
     } else {
-      alert("Failed to submit form. Please try again.");
+      alert("Failed to submit form.");
     }
   };
 
