@@ -28,6 +28,16 @@ const Form = () => {
   const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
 
+    if (!form.name || !form.age || !form.dob || !form.email) {
+        alert("please fill out all the fields before submitting.");
+        return;
+    }
+
+    if (!EMAIL_REGEX.test(form.email)) {
+        setEmailError("Please enter a valid email address.");
+        return;
+    }
+
     const response = await fetch("/api/submitForm", {
       method: "POST",
       headers: {
