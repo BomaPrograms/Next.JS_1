@@ -56,19 +56,22 @@ const Form = () => {
   };
 
   return (
-    <div className="body">
+    <div className="container">
       <h1 className="headford">FORM APPLICATION</h1>
       <form onSubmit={handleSubmit}>
         <label className="l_name" htmlFor="name">Name:</label>
-        <input
+        <br />
+        <input className="i_name"
           type="text"
           name="name"
           value={form.name}
           onChange={handleInputChange}
         />
         <br />
+        <br />
 
         <label className="l_age" htmlFor="age">Age:</label>
+        <br />
         <input className="i_age"
           type="number"
           name="age"
@@ -76,18 +79,22 @@ const Form = () => {
           onChange={handleInputChange}
         />
         <br />
+        <br />
 
         <label className="l_dob" htmlFor="dob">Date of Birth:</label>
-        <input
+        <br />
+        <input className="i_dob"
           type="date"
           name="dob"
           value={form.dob}
           onChange={handleInputChange}
         />
         <br />
+        <br />
 
         <label className="l_email" htmlFor="email">Email:</label>
-        <input
+        <br />
+        <input className="i_email"
           type="email"
           name="email"
           value={form.email}
@@ -95,10 +102,12 @@ const Form = () => {
         />
         {emailError && <p style={{ color: "red" }}>{emailError}</p>}
         <br />
+        <br />
 
         <button className="l_submit" type="submit">Submit</button>
       </form>
     </div>
+    
   );
 };
 

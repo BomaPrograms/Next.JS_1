@@ -30,14 +30,15 @@ body {
 
 
 *{
-  background-color: #6252c7;
+  background-image: url(../istockphoto-122204403_1-612x612.jpg);
   font-family: 'Franklin Gothic Medium';
 }
 
-.body{
-  background-color: rgba(0, 0, 0, 0.276);
-  text-decoration: wavy;
+.container{
   font-size: larger;
+  border-left: 10px;
+  border-right: 10px;
+  border-radius: 100px;
 }
 
 .headford{
@@ -50,42 +51,87 @@ body {
 }
 
 .l_name{
-  color: ;
-}
-
-.i_name{
-  border-left: 10px;
-  border-right: 10px;
+  color: white;
+  margin-left: 5px;
   border-radius: 100px;
 }
 
-.l_age{
+.i_name{
+  background: skyblue;
+  color: black;
+  width: 200px;
+  height: 25px;
+  margin-left: 15px;
+  padding-left: 10px;
+  /* border-radius: 100px; */
+}
 
+.l_age{
+  color: white;
+  margin-left: 5px;
+  border-radius: 100px;
 }
 
 .i_age{
-  
+  background: skyblue;
+  color: black;
+  width: 200px;
+  height: 25px;
+  margin-left: 15px;
+  padding-left: 10px;
+  /* border-radius: 100px; */
 }
 
 .l_dob{
-
+  color: white;
+  margin-left: 5px;
+  border-radius: 100px;
 }
 
-.l_name{
-
+.i_dob{
+  background: skyblue;
+  color: black;
+  width: 200px;
+  height: 25px;
+  margin-left: 15px;
+  padding-left: 10px;
+  /* border-radius: 100px; */
 }
 
 .l_email{
-
+  color: white;
+  margin-left: 5px;
+  border-radius: 100px;
 }
 
 .i_email{
-  
+  background: skyblue;
+  color: black;
+  width: 150px;
+  max-width: 200px;
+  height: 25px;
+  margin-left: 15px;
+  padding-left: 10px;
+  /* border-radius: 100px; */
 }
 
 .l_submit{
+
+  background: slateblue;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
   border: 10px;
   border-left: 30px;
+  padding-left: 10px;
+  padding-right: 10px;
   border-radius: 50px;
-  box-shadow: #000;
+  font-size: larger;
+  color: white;
 }
+
+/* .nishtha{
+  justify-content: end;
+  padding-left: 500px;
+  
+} */
