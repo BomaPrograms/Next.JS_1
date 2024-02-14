@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-// import styles from 
+
 
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
@@ -56,10 +56,10 @@ const Form = () => {
   };
 
   return (
-    <div>
-      <h1>FORM APPLICATION</h1>
+    <div className="body">
+      <h1 className="headford">FORM APPLICATION</h1>
       <form onSubmit={handleSubmit}>
-        <label htmlFor="name">Name:</label>
+        <label className="l_name" htmlFor="name">Name:</label>
         <input
           type="text"
           name="name"
@@ -68,8 +68,8 @@ const Form = () => {
         />
         <br />
 
-        <label htmlFor="age">Age:</label>
-        <input
+        <label className="l_age" htmlFor="age">Age:</label>
+        <input className="i_age"
           type="number"
           name="age"
           value={form.age}
@@ -77,7 +77,7 @@ const Form = () => {
         />
         <br />
 
-        <label htmlFor="dob">Date of Birth:</label>
+        <label className="l_dob" htmlFor="dob">Date of Birth:</label>
         <input
           type="date"
           name="dob"
@@ -86,7 +86,7 @@ const Form = () => {
         />
         <br />
 
-        <label htmlFor="email">Email:</label>
+        <label className="l_email" htmlFor="email">Email:</label>
         <input
           type="email"
           name="email"
@@ -96,7 +96,7 @@ const Form = () => {
         {emailError && <p style={{ color: "red" }}>{emailError}</p>}
         <br />
 
-        <button type="submit">Submit</button>
+        <button className="l_submit" type="submit">Submit</button>
       </form>
     </div>
   );
