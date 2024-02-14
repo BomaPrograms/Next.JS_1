@@ -9,6 +9,7 @@ const Form = () => {
     age: "",
     dob: "",
     email: "",
+    info: "",
   });
 
   const [emailError, setEmailError] = useState("");
@@ -48,66 +49,94 @@ const Form = () => {
 
     if (response.ok) {
       alert("Form submitted successfully!");
-      setForm({ name: "", age: "", dob: "", email: "" });
+      setForm({ name: "", age: "", dob: "", email: "", info: "" });
       setEmailError("");
     } else {
       alert("Failed to submit form.");
     }
   };
-
   return (
-    <div className="container">
+    <div className="parent">
       <h1 className="headford">FORM APPLICATION</h1>
-      <form onSubmit={handleSubmit}>
-        <label className="l_name" htmlFor="name">Name:</label>
-        <br />
-        <input className="i_name"
-          type="text"
-          name="name"
-          value={form.name}
-          onChange={handleInputChange}
-        />
-        <br />
-        <br />
+      <div className="container">
+        <div className="container1">
+          <form onSubmit={handleSubmit}>
+            <label className="l_name" htmlFor="name">
+              Name:
+            </label>
+            <br />
+            <input
+              className="i_name"
+              type="text"
+              name="name"
+              value={form.name}
+              onChange={handleInputChange}
+            />
+            <br />
+            <br />
 
-        <label className="l_age" htmlFor="age">Age:</label>
-        <br />
-        <input className="i_age"
-          type="number"
-          name="age"
-          value={form.age}
-          onChange={handleInputChange}
-        />
-        <br />
-        <br />
+            <label className="l_age" htmlFor="age">
+              Age:
+            </label>
+            <br />
+            <input
+              className="i_age"
+              type="number"
+              name="age"
+              value={form.age}
+              onChange={handleInputChange}
+            />
+            <br />
+            <br />
 
-        <label className="l_dob" htmlFor="dob">Date of Birth:</label>
-        <br />
-        <input className="i_dob"
-          type="date"
-          name="dob"
-          value={form.dob}
-          onChange={handleInputChange}
-        />
-        <br />
-        <br />
+            <label className="l_dob" htmlFor="dob">
+              Date of Birth:
+            </label>
+            <br />
+            <input
+              className="i_dob"
+              type="date"
+              name="dob"
+              value={form.dob}
+              onChange={handleInputChange}
+            />
+            <br />
+            <br />
 
-        <label className="l_email" htmlFor="email">Email:</label>
-        <br />
-        <input className="i_email"
-          type="email"
-          name="email"
-          value={form.email}
-          onChange={handleInputChange}
-        />
-        {emailError && <p style={{ color: "red" }}>{emailError}</p>}
-        <br />
-        <br />
+            <label className="l_email" htmlFor="email">
+              Email:
+            </label>
+            <br />
+            <input
+              className="i_email"
+              type="email"
+              name="email"
+              value={form.email}
+              onChange={handleInputChange}
+            />
+            {emailError && <p style={{ color: "red" }}>{emailError}</p>}
+            <br />
+            <br />
 
-        <button className="l_submit" type="submit">Submit</button>
-      </form>
+            <button className="l_submit" type="submit">
+              Submit
+            </button>
+          </form>
+        </div>
+        <div className="container2">
+          <div>
+              <br />
+              NISHTHA APPLICATION FORM.
+              <br />
+              By applying to this form,
+              <br />
+              You have joined the
+              <br />
+              Nishtha Business Enterprises.
+          </div>
+        </div>
+      </div>
     </div>
-    
   );
 };
 
