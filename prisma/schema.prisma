@@ -9,15 +9,31 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id        Int      @id @default(autoincrement())
-  name      String
-  age       Int
-  dob       DateTime
-  email     String   @unique
-  info      String?
+model user {
+  id         Int          @id @default(autoincrement())
+  name       String
+  age        Int
+  dob        DateTime
+  email      String       @unique
+  info       String?
+  user_books user_books[]
+}
+
+model books {
+  id         Int          @id @default(autoincrement())
+  name       String
+  user_books user_books[]
+}
+
+model user_books {
+  user_id  Int
+  books_id Int
+  books    books @relation(fields: [books_id], references: [id])
+  user     user  @relation(fields: [user_id], references: [id])
+
+  @@id([user_id, books_id])
 }
