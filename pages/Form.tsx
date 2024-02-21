@@ -48,8 +48,7 @@ const Form = () => {
     });
 
     if (response.ok) {
-      const data = await response.json();
-      alert(`Form submitted successfully! User ID: ${data.user.id}`);
+      alert("Form submitted successfully!");
       setForm({ name: "", age: "", dob: "", email: "", info: "" });
       setEmailError("");
     } else {

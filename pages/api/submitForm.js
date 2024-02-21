@@ -1,24 +1,24 @@
 import { PrismaClient } from "@prisma/client";
+
 const prisma = new PrismaClient();
 
-export default async function handler(req, res) {
-  if (req.method === "POST") {
-    const { name, age, dob, email, info } = req.body;
-    try {
-      const user = await prisma.user.create({
-        data: {
-          name,
-          age,
-          dob,
-          email,
-          info,
-        },
-      });
-      res.status(200).json({ message: "Form submitted successfully.", user });
-    } catch (error) {
-      res.status(500).json({ error: "Failed to submit form." });
-    }
-  } else {
-    res.status(405).json({ error: "Method not allowed." });
-  }
+
+
+const formData = {
+  name: req.body.name,
+  age: parseInt(req.body.age),
+  dob: new Date(req.body.dob),
+  email: req.body.email,
+  info: req.body.info,
+};
+
+try {
+  const newForm = await prisma.form.create({
+    data: formData,
+  });
+
+  res.status(200).json(newForm);
+} catch (error) {
+  console.error(error);
+  res.status(500).json({ error: "Failed to write form data to database." });
 }
