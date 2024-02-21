@@ -1,26 +1,24 @@
-import fs from "fs";
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
 
-// Define the API route handler function
 export default async function handler(req, res) {
-  // Check if the request method is POST
   if (req.method === "POST") {
-    // Send a response to the client
-    res.status(200).json({ message: "Form submitted successfully." });
-
-    // Define the form data
-    const formData = JSON.stringify(req.body, null, 2);
-
-    // Write the form data to a file
-    fs.appendFile("form-data.json", formData, (err) => {
-      if (err) {
-        console.error(err);
-        res.status(500).json({ error: "Failed to write form data to file." });
-      } else {
-        console.log("Form data written to form-data.json");
-      }
-    });
+    const { name, age, dob, email, info } = req.body;
+    try {
+      const user = await prisma.user.create({
+        data: {
+          name,
+          age,
+          dob,
+          email,
+          info,
+        },
+      });
+      res.status(200).json({ message: "Form submitted successfully.", user });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to submit form." });
+    }
   } else {
-    // Send a failure response for non-POST requests
-    res.status(405).json({ message: "Method not allowed." });
+    res.status(405).json({ error: "Method not allowed." });
   }
 }
