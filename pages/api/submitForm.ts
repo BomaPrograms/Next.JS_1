@@ -155,56 +155,134 @@
 
 
 
+// import { NextApiRequest, NextApiResponse } from "next";
+// import { PrismaClient } from "@prisma/client";
+
+// // Define the type for the request body
+// interface IFormData {
+//   email: string;
+// }
+
+// // Define the type for the API route handler
+// export default async function submitForm(
+//   req: NextApiRequest,
+//   res: NextApiResponse
+// ) {
+//   // Check if the request method is POST
+//   if (req.method === "POST") {
+//     // Parse the request body as JSON
+//     const formData: IFormData = req.body;
+
+//     // Connect to the Prisma database
+//     const prisma = new PrismaClient();
+
+//     // Check if the user exists
+//     const user = await prisma.user.findUnique({
+//       where: {
+//         email: formData.email,
+//       },
+//       include: {
+//         book: true,
+//       },
+//     });
+
+//     if (user) {
+//       // If the user exists, display the user and the books they have taken
+//       res.status(200).json({
+//         message: `Email: ${user.email}, Books: ${user.books
+//           .map((book: { title: any; }) => book.title)
+//           .join(", ")}`,
+//       });
+//     } else {
+//       // If the user does not exist, display a message indicating that the user does not exist
+//       res.status(404).json({
+//         message: "User does not exist",
+//       });
+//     }
+
+//     // Close the Prisma database connection
+//     await prisma.$disconnect();
+//   } else {
+//     // If the request method is not POST, return a 405 Method Not Allowed error
+//     res.setHeader("Allow", "POST");
+//     res.status(405).end("Method Not Allowed");
+//   }
+// }
+
+
+
 import { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
 
-// Define the type for the request body
-interface IFormData {
-  email: string;
-}
+const prisma = new PrismaClient();
 
-// Define the type for the API route handler
-export default async function submitForm(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  // Check if the request method is POST
+export default async function handler(req:NextApiRequest, res:NextApiResponse) {
   if (req.method === "POST") {
-    // Parse the request body as JSON
-    const formData: IFormData = req.body;
+    const { email, name, age, dob, info } = req.body;
 
-    // Connect to the Prisma database
-    const prisma = new PrismaClient();
-
-    // Check if the user exists
-    const user = await prisma.user.findUnique({
-      where: {
-        email: formData.email,
-      },
-      include: {
-        books: true,
-      },
-    });
-
-    if (user) {
-      // If the user exists, display the user and the books they have taken
-      res.status(200).json({
-        message: `Email: ${user.email}, Books: ${user.books
-          .map((book) => book.title)
-          .join(", ")}`,
+    try {
+      const user = await prisma.user.create({
+        data: {
+          name,
+          age,
+          dob,
+          email,
+          info,
+          user_books: {
+            create: [],
+          },
+        },
       });
-    } else {
-      // If the user does not exist, display a message indicating that the user does not exist
-      res.status(404).json({
-        message: "User does not exist",
-      });
+
+      res.status(200).json({ message: "User created", user });
+    } catch (error) {
+      res.status(400).json({ message: "User creation failed", error });
     }
-
-    // Close the Prisma database connection
-    await prisma.$disconnect();
   } else {
-    // If the request method is not POST, return a 405 Method Not Allowed error
-    res.setHeader("Allow", "POST");
-    res.status(405).end("Method Not Allowed");
+    res.status(405).json({ message: "Method not allowed" });
   }
 }
+
+
+
+import { useState } from "react";
+import axios from "axios";
+
+function SubmitForm() {
+  const [email, setEmail] = useState("");
+  const [response, setResponse] = useState(null);
+
+  const handleSubmit = async (e: { preventDefault: () => void; }) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post("/api/submitForm", { email });
+      setResponse(response.data);
+    } catch (error) {
+      setResponse({ message: "User does not exist" });
+    }
+  };
+
+  return (
+    <div>
+      <form onsubmit={handleSubmit}>
+        <label htmlFor="email">Email:</label>
+        <input
+          type="email"
+          id="email"
+          value={email}
+          const onChange={(e) => setEmail(e.target.value)}
+        />
+        <button type="submit">Submit</button>
+      </form>
+      {response && (
+        <div>
+          <p>Email: {Response.message.split(", ")[0]}</p>
+          <p>Books: {Response.message.split(", ")[1].replace(/\[|\]|"/g, "")}</p>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default SubmitForm; // Changed `submitForm` to `SubmitForm` to match the function name
