@@ -13,27 +13,28 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model user {
-  id         Int          @id @default(autoincrement())
+model User {
+  id         Int         @id @default(autoincrement())
   name       String
   age        Int
   dob        DateTime
-  email      String       @unique
+  email      String      @unique
   info       String?
-  user_books user_books[]
+  user_books UserBooks[]
 }
 
-model books {
-  id         Int          @id @default(autoincrement())
-  name       String
-  user_books user_books[]
+model Books {
+  id        Int         @id @default(autoincrement())
+  name      String
+  UserBooks UserBooks[]
 }
 
-model user_books {
+model UserBooks {
   user_id  Int
   books_id Int
-  books    books @relation(fields: [books_id], references: [id])
-  user     user  @relation(fields: [user_id], references: [id])
+  books    Books @relation(fields: [books_id], references: [id])
+  user     User  @relation(fields: [user_id], references: [id])
 
   @@id([user_id, books_id])
+  @@unique([user_id, books_id])
 }

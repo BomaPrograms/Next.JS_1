@@ -1,3 +1,4 @@
+// 1st
 // import fs from "fs";
 
 // // Define the API route handler function
@@ -28,20 +29,12 @@
 
 
 
-
-
-
-
-
-
-
-
-
+//2nd
 // import { PrismaClient } from "@prisma/client";
 
 // const prisma = new PrismaClient();
 
-// async function handleFormSubmission(req, res) {
+// async function handleFormSubmission(req: { method: string; body: { name: any; age: string; dob: string | number | Date; email: any; info: any; }; }, res: { status: (arg0: number) => { (): any; new(): any; json: { (arg0: { message?: string; id?: number; name?: string; age?: number; dob?: Date; email?: string; info?: string | null; error?: string; }): void; new(): any; }; }; }) {
 //   // Check if the request method is POST
 //   if (req.method === "POST") {
 //     // Send a response to the client
@@ -70,54 +63,26 @@
 //     res.status(500).json({ error: "Failed to write form data to database." });
 //   }
 // }
-// export default handleFormSubmission;
+// // export default handleFormSubmission;
 
 
 
-
-
-import { PrismaClient } from "@prisma/client";
-import { NextApiRequest, NextApiResponse } from "next";
-
-const prisma = new PrismaClient();
-
-async function handleFormSubmission(req:NextApiRequest, res:NextApiResponse) {
-  // Check if the request method is POST
-  if (req.method === "POST") {
-    // Get the user's email address from the request body
-    const { email } = req.body as any;
-
-    // Check if the user has already taken a book
-    const userWithBook = await prisma.user.findUnique({
-      where: { email },
-      include: { user_books:{include: {books: true}} }
-    });
-
-    console.log(userWithBook)
-
-    if (userWithBook) {
-      // If the user has already taken a book, send a failure response
-      res.status(400).json({ message: "User has already taken a book." });
-    } else {
-      // If the user hasn't taken a book yet, proceed with the form submission
-      res.send("")
-    }
-  } else {
-    // Send a failure response for non-POST requests
-    res.status(405).json({ message: "Method not allowed." });
-  }
-}
-
-export default handleFormSubmission;
-
-
-
-
+//3rd
 // import { NextApiRequest, NextApiResponse } from "next";
 // import { PrismaClient } from "@prisma/client";
 
 // interface IFormData {
 //   email: string;
+// }
+
+// interface IBook {
+//   id: number;
+//   name: string;
+// }
+
+// interface IUser {
+//   email: string;
+//   user_books: { books: IBook }[];
 // }
 
 // export default async function submitForm(
@@ -139,10 +104,11 @@ export default handleFormSubmission;
 //     });
 
 //     if (user) {
+//       const books = user.user_books.map((book) => book.books.name);
+//       const bookString = books.length > 0 ? books.join(", ") : "none";
+
 //       res.status(200).json({
-//         message: `Email: ${user.email}, Books: ${user.user_books
-//           .map((book) => book.books_id) 
-//           .join(", ")}`,
+//         message: `Email: ${user.email}, Books: ${bookString}`,
 //       });
 //     } else {
 //       res.status(404).json({
@@ -156,3 +122,54 @@ export default handleFormSubmission;
 //     res.status(405).end("Method Not Allowed");
 //   }
 // }
+
+
+
+import { NextApiRequest, NextApiResponse } from "next";
+import { PrismaClient } from "@prisma/client";
+
+interface IFormData {
+  email: string;
+}
+
+export default async function submitForm(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  if (req.method === "POST") {
+    const formData: IFormData = req.body;
+
+    const prisma = new PrismaClient();
+
+    const user = await prisma.user.findUnique({
+      where: {
+        email: formData.email,
+      },
+      include: {
+        user_books: {
+          include: {
+            books: true,
+          },
+        },
+      },
+    });
+
+    if (user) {
+      const books = user.user_books.map((book) => book.books.name);
+      const bookString = books.length > 0 ? books.join(", ") : "none";
+
+      res.status(200).json({
+        message: `Email: ${user.email}, Books: ${bookString}`,
+      });
+    } else {
+      res.status(404).json({
+        message: "User does not exist",
+      });
+    }
+
+    await prisma.$disconnect();
+  } else {
+    res.setHeader("Allow", "POST");
+    res.status(405).end("Method Not Allowed");
+  }
+}
