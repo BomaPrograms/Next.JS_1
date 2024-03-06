@@ -125,51 +125,39 @@
 
 
 
-import { NextApiRequest, NextApiResponse } from "next";
-import { PrismaClient } from "@prisma/client";
+import { NextApiRequest, NextApiResponse } from "next"; import { PrismaClient } from "@prisma/client";
 
-interface IFormData {
-  email: string;
-}
+interface IFormData { email: string; }
 
-export default async function submitForm(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  if (req.method === "POST") {
-    const formData: IFormData = req.body;
+export default async function submitForm( req: NextApiRequest, res: NextApiResponse ) { if (req.method === "POST") { const formData: IFormData = req.body;
 
-    const prisma = new PrismaClient();
+const prisma = new PrismaClient();
 
-    const user = await prisma.user.findUnique({
-      where: {
-        email: formData.email,
-      },
+const user = await prisma.user.findUnique({
+  where: {
+    email: formData.email,
+  },
+  include: {
+    user_books: {
       include: {
-        user_books: {
-          include: {
-            books: true,
-          },
-        },
+        books: true,
       },
-    });
+    },
+  },
+});
 
-    if (user) {
-      const books = user.user_books.map((book) => book.books.name);
-      const bookString = books.length > 0 ? books.join(", ") : "none";
+if (user) {
+  const books = user.user_books.map((book) => book.books.name);
+  const bookString = books.length > 0 ? books.join(", ") : "none";
 
-      res.status(200).json({
-        message: `Email: ${user.email}, Books: ${bookString}`,
-      });
-    } else {
-      res.status(404).json({
-        message: "User does not exist",
-      });
-    }
-
-    await prisma.$disconnect();
-  } else {
-    res.setHeader("Allow", "POST");
-    res.status(405).end("Method Not Allowed");
-  }
+  res.status(200).json({
+    message: `Email: ${user.email}, Books: ${bookString}`,
+  });
+} else {
+  res.status(404).json({
+    message: "User does not exist",
+  });
 }
+
+await prisma.$disconnect();
+} else { res.setHeader("Allow", "POST"); res.status(405).end("Method Not Allowed"); } }
