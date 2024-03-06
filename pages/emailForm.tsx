@@ -32,46 +32,42 @@ const Form = () => {
     }
   };
 
-  const handleSubmit = async (e: { preventDefault: () => void }) => {
-    e.preventDefault();
+  const handleSubmit = async (e: { preventDefault: () => void }) => { e.preventDefault();
 
-    // Validate form fields
-    if (!form.email) {
-      alert("Please fill in all required fields.");
-      return;
-    }
+  // Validate form fields
+  if (!form.email) {
+    alert("Please fill in all required fields.");
+    return;
+  }
 
-    if (!EMAIL_REGEX.test(form.email)) {
-      setEmailError("Please enter a valid email address.");
-      return;
-    }
+  if (!EMAIL_REGEX.test(form.email)) {
+    setEmailError("Please enter a valid email address.");
+    return;
+  }
 
-    // Send form data to API route
-    const response = await fetch("/api/submitForm", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(form),
-    });
+  // Send form data to API route
+  const response = await fetch("/api/submitForm", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(form),
+  });
 
-    if (response.ok) {
-      alert("Form submitted successfully!");
-      setForm({ email: "" });
-      setEmailError("");
-    } else {
-      alert("Failed to submit form.");
-    }
+  if (response.ok) {
+    alert("Form submitted successfully!");
+    setForm({ email: "" });
+    setEmailError("");
+  } else {
+    alert("Failed to submit form.");
+  }
   };
 
-  useEffect(() => {
-    const fetchUserBooks = async () => {
-      const response = await fetch("/api/userBooks");
-      const data = await response.json();
-      setUserBooks(data);
-    };
+  useEffect(() => { const fetchUserBooks = async () => { 
+  const response = await fetch("/api/userBooks"); 
+  const data = await response.json(); setUserBooks(data); };
 
-    fetchUserBooks();
+  fetchUserBooks();
   }, []);
 
   return (
