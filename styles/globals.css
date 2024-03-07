@@ -136,6 +136,24 @@ font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida San
   color: white;
 }
 
+.l_book{
+  color: white;
+  margin-left: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.i_book{
+  background: skyblue;
+  color: black;
+  width: 150px;
+  max-width: 200px;
+  height: 25px;
+  margin-left: 15px;
+  padding-left: 10px;
+  border-radius: 5px;
+}
+
 .container2{
   height: 100px;
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
