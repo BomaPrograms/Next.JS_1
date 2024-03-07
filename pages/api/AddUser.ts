@@ -3,17 +3,11 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export default async function addUser(req: { method: string; body: { name: any; age: any; dob: any; email: any; info: any; book: any; }; }, res: { status: (arg0: number) => { (): any; new(): any; json: { (arg0: { message: string; user?: { id: number; name: string; age: number; dob: Date; email: string; info: string | null; }; }): void; new(): any; }; }; }) {
+export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
-    const { name, age, dob, email, info, book } = req.body;
+    const { name, age, dob, email, info, bookId } = req.body;
 
-    const newBook = await prisma.books.create({
-      data: {
-        name: book,
-      },
-    });
-
-    const user = await prisma.user.create({
+    const newUser = await prisma.user.create({
       data: {
         name,
         age: parseInt(age),
@@ -22,18 +16,15 @@ export default async function addUser(req: { method: string; body: { name: any; 
         info,
         user_books: {
           create: {
-            books_id: newBook.id,
+            books_id: parseInt(bookId),
           },
         },
       },
     });
 
-    res.status(200).json({ message: "User added successfully", user });
+    res.status(200).json(newUser);
   } else {
-    res.status(405).json({ message: "Method not allowed" });
+    res.status(405).json({ error: "Method not allowed" });
   }
-}
-function setBooks(data: any) {
-  throw new Error("Function not implemented.");
-}
+};
 

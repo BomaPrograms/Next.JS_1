@@ -72,7 +72,7 @@ import { PrismaClient } from "@prisma/client";
 
 interface IFormData { email: string; }
 
-export default async function submitForm( req: NextApiRequest, res: NextApiResponse ) { 
+export default async function submitForm(req: NextApiRequest, res: NextApiResponse) { 
   if (req.method === "POST") { const formData: IFormData = req.body;
 
 const prisma = new PrismaClient();

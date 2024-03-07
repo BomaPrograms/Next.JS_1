@@ -1,135 +1,118 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useRouter } from "next/router";
+import { PrismaClient } from "@prisma/client";
 
-type ResponseType = {
-  message: string;
-};
+const prisma = new PrismaClient();
 
-interface IBook {
-  id: number;
-  name: string;
-}
+const AddUser: React.FC = () => {
+  const [name, setName] = useState("");
+  const [age, setAge] = useState("");
+  const [dob, setDob] = useState("");
+  const [email, setEmail] = useState("");
+  const [info, setInfo] = useState("");
+  const [bookId, setBookId] = useState("");
+  const router = useRouter();
 
-const EmailForm = () => {
-  const [form, setForm] = useState<any>({
-    name: "",
-    age: "",
-    dob: "",
-    email: "",
-    info: "",
-    book: "",
-  });
-  const [response, setResponse] = useState<string | null>(null);
-  const [books, setBooks] = useState<IBook[]>([]);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-  const handleInputChange = (e: { target: { name: any; value: any } }) => {
-    const { name, value } = e.target;
-    setForm({ ...form, [name]: value });
-  };
+    const handleSubmit = async (e: React.FormEvent) => {
+      e.preventDefault();
 
-  const handleBookChange = (e: { target: { value: any } }) => {
-    setForm({ ...form, book: e.target.value });
+      try {
+        const newUser = await prisma.user.create({
+          data: {
+            name,
+            age: parseInt(age),
+            dob: new Date(dob),
+            email,
+            info,
+            user_books: {
+              create: {
+                books_id: parseInt(bookId),
+              },
+            },
+          },
+        });
+
+        // Display a success message
+        alert(`User "${newUser.name}" has been added.`);
+
+        // Redirect to the newly created user's page
+        router.push(`/users/${newUser.id}`);
+      } catch (error) {
+        console.error(error);
+        alert("An error occurred while adding the user.");
+      }
+    };
+
+    router.push("/");
   };
 
   return (
-    <div className="contain">
-      <h1 className="headies">ADD USER FORM</h1>
+    <div>
+      <h1>Add User</h1>
       <form onSubmit={handleSubmit}>
-        <label className="l_name" htmlFor="name">
+        <label>
           Name:
-        </label>
-        <br />
-        <input
-          className="i_name"
-          type="text"
-          name="name"
-          value={form.name}
-          onChange={handleInputChange}
-          placeholder="Full Name"
-        />
-        <br />
-        <br />
-        <label className="l_age" htmlFor="age">
-          Age:
-        </label>
-        <br />
-        <input
-          className="i_age"
-          type="number"
-          name="age"
-          value={form.age}
-          onChange={handleInputChange}
-          placeholder="How old are you ?"
-        />
-        <br />
-        <br />
-        <label className="l_dob" htmlFor="dob">
-          Date of Birth:
-        </label>
-        <br />
-        <input
-          className="i_dob"
-          type="date"
-          name="dob"
-          value={form.dob}
-          onChange={handleInputChange}
-        />
-        <br />
-        <br />
-        <label className="l_email" htmlFor="email">
-          Email:
-        </label>
-        <br />
-        <input
-          className="i_email"
-          type="email"
-          name="email"
-          value={form.email}
-          onChange={handleInputChange}
-          placeholder="Type email here"
-        />
-        <br />
-        <br />
-        <label className="l_info" htmlFor="info">
-          Info:
-        </label>
-        <br />
-        <textarea
-          className="i_info"
-          name="info"
-          value={form.info}
-          onChange={handleInputChange}
-          placeholder="Type something you want to tell us"
-        />
-        <br />
-        <br />
-        <div>
-          <label className="l_book" htmlFor="book">
-            Book:
-          </label>
-          <br />
           <input
-            className="i_book"
             type="text"
-            name="book"
-            value={form.book}
-            onChange={handleInputChange}
-            placeholder="Enter a book name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
           />
-          {books.map((book) => (
-            <option key={book.id} value={book.name}>
-              {book.name}
-            </option>
-          ))}
-        </div>
+        </label>
         <br />
         <br />
-        <button className="l_submit" type="submit">
-          Submit
-        </button>
+        <label>
+          Age:
+          <input
+            type="number"
+            value={age}
+            onChange={(e) => setAge(e.target.value)}
+          />
+        </label>
+        <br />
+        <br />
+        <label>
+          Date of Birth:
+          <input
+            type="date"
+            value={dob}
+            onChange={(e) => setDob(e.target.value)}
+          />
+        </label>
+        <br />
+        <br />
+        <label>
+          Email:
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </label>
+        <br />
+        <br />
+        <label>
+          Info:
+          <textarea value={info} onChange={(e) => setInfo(e.target.value)} />
+        </label>
+        <br />
+        <br />
+        <label>
+          Book ID:
+          <input
+            type="number"
+            value={bookId}
+            onChange={(e) => setBookId(e.target.value)}
+          />
+        </label>
+        <br />
+        <br />
+        <button type="submit">Add User</button>
       </form>
-      {response && <p>{response}</p>}
     </div>
   );
 };
 
-export default EmailForm;
+export default AddUser;
