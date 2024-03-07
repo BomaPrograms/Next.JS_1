@@ -1,7 +1,4 @@
 import { useState, useEffect } from "react";
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
 
 type ResponseType = {
   message: string;
@@ -35,29 +32,6 @@ const EmailForm = () => {
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
-
-    try {
-      const newUser = await prisma.user.create({
-        data: {
-          name: form.name,
-          age: parseInt(form.age),
-          dob: form.dob,
-          email: form.email,
-          info: form.info,
-          user_books: {
-            connect: {
-              user: form.book,
-            },
-          },
-        },
-      });
-
-      setResponse(`User with ID ${newUser.id} added successfully.`);
-      setForm({ name: "", age: "", dob: "", email: "", info: "", book: "" });
-    } catch (error) {
-      setResponse(`An error occurred while adding the user: ${error.message}`);
-    }
-  };
 
   // Fetch books data from the server and set it to the books state
   useEffect(() => {
