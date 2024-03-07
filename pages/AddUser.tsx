@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
@@ -21,7 +21,7 @@ const EmailForm = () => {
     info: "",
     book: "",
   });
-  const [response, setResponse] = useState<ResponseType | null>(null);
+  const [response, setResponse] = useState<string | null>(null);
   const [books, setBooks] = useState<IBook[]>([]);
 
   const handleInputChange = (e: { target: { name: any; value: any } }) => {
@@ -36,28 +36,39 @@ const EmailForm = () => {
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
-    const response = await fetch("/api/addUser", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(form),
-    });
+    try {
+      const newUser = await prisma.user.create({
+        data: {
+          name: form.name,
+          age: parseInt(form.age),
+          dob: form.dob,
+          email: form.email,
+          info: form.info,
+          user_books: {
+            connect: {
+              user: form.book,
+            },
+          },
+        },
+      });
 
-    if (response.ok) {
-      const data = await response.json();
-      setResponse({ message: data.message });
-    } else {
-      setResponse({ message: "An error occurred while submitting the form." });
+      setResponse(`User with ID ${newUser.id} added successfully.`);
+      setForm({ name: "", age: "", dob: "", email: "", info: "", book: "" });
+    } catch (error) {
+      setResponse(`An error occurred while adding the user: ${error.message}`);
     }
   };
 
   // Fetch books data from the server and set it to the books state
-  const fetchBooks = async () => {
-    const response = await fetch("/api/books");
-    const data = await response.json();
-    setBooks(data);
-  };
+  useEffect(() => {
+    const fetchBooks = async () => {
+      const response = await fetch("/api/books");
+      const data = await response.json();
+      setBooks(data);
+    };
+
+    fetchBooks();
+  }, []);
 
   return (
     <div className="contain">
@@ -131,25 +142,32 @@ const EmailForm = () => {
         />
         <br />
         <br />
-        <label className="l_book" htmlFor="book">
-          Book:
-        </label>
-        <br />
-        <input
-          className="i_book"
-          type="text"
-          name="book"
-          value={form.book}
-          onChange={handleInputChange}
-          placeholder="Enter a book name"
-        />
+        <div>
+          <label className="l_book" htmlFor="book">
+            Book:
+          </label>
+          <br />
+          <input
+            className="i_book"
+            type="text"
+            name="book"
+            value={form.book}
+            onChange={handleInputChange}
+            placeholder="Enter a book name"
+          />
+          {books.map((book) => (
+            <option key={book.id} value={book.name}>
+              {book.name}
+            </option>
+          ))}
+        </div>
         <br />
         <br />
         <button className="l_submit" type="submit">
           Submit
         </button>
       </form>
-      {response && <p>{response.message}</p>}
+      {response && <p>{response}</p>}
     </div>
   );
 };

@@ -1,27 +1,10 @@
-import { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
 
-interface IFormData {
-  name: string;
-  age: number;
-  dob: string;
-  email: string;
-  info: string;
-  book: string; // Update the book field to be string
-}
+const prisma = new PrismaClient();
 
-export default async function addUser(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+export default async function addUser(req: { method: string; body: { name: any; age: any; dob: any; email: any; info: any; book: any; }; }, res: { status: (arg0: number) => { (): any; new(): any; json: { (arg0: { message: string; user?: { id: number; name: string; age: number; dob: Date; email: string; info: string | null; }; }): void; new(): any; }; }; }) {
   if (req.method === "POST") {
-    const { name, age, dob, email, info, book } = req.body as IFormData;
-
-    if (!book) {
-      return res.status(400).json({ message: "Please select a book" });
-    }
-
-    const prisma = new PrismaClient();
+    const { name, age, dob, email, info, book } = req.body;
 
     const newBook = await prisma.books.create({
       data: {
@@ -32,7 +15,7 @@ export default async function addUser(
     const user = await prisma.user.create({
       data: {
         name,
-        age,
+        age: parseInt(age),
         dob: new Date(dob),
         email,
         info,
