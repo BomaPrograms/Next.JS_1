@@ -1,3 +1,4 @@
+import { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
@@ -32,3 +33,7 @@ export default async function addUser(req: { method: string; body: { name: any; 
     res.status(405).json({ message: "Method not allowed" });
   }
 }
+function setBooks(data: any) {
+  throw new Error("Function not implemented.");
+}
+

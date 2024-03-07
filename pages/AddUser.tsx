@@ -30,20 +30,6 @@ const EmailForm = () => {
     setForm({ ...form, book: e.target.value });
   };
 
-  const handleSubmit = async (e: { preventDefault: () => void }) => {
-    e.preventDefault();
-
-  // Fetch books data from the server and set it to the books state
-  useEffect(() => {
-    const fetchBooks = async () => {
-      const response = await fetch("/api/books");
-      const data = await response.json();
-      setBooks(data);
-    };
-
-    fetchBooks();
-  }, []);
-
   return (
     <div className="contain">
       <h1 className="headies">ADD USER FORM</h1>
