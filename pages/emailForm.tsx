@@ -87,7 +87,7 @@ const Form = () => {
             className="i_email"
             type="email"
             name="email"
-            value={form.email}
+            value={form.email} 
             onChange={handleInputChange}
           />{" "}
           {emailError && <p style={{ color: "red" }}>{emailError}</p>} <br />{" "}

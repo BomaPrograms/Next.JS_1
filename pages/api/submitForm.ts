@@ -66,65 +66,7 @@
 // // export default handleFormSubmission;
 
 
-
 //3rd
-// import { NextApiRequest, NextApiResponse } from "next";
-// import { PrismaClient } from "@prisma/client";
-
-// interface IFormData {
-//   email: string;
-// }
-
-// interface IBook {
-//   id: number;
-//   name: string;
-// }
-
-// interface IUser {
-//   email: string;
-//   user_books: { books: IBook }[];
-// }
-
-// export default async function submitForm(
-//   req: NextApiRequest,
-//   res: NextApiResponse
-// ) {
-//   if (req.method === "POST") {
-//     const formData: IFormData = req.body;
-
-//     const prisma = new PrismaClient();
-
-//     const user = await prisma.user.findUnique({
-//       where: {
-//         email: formData.email,
-//       },
-//       include: {
-//         user_books: true,
-//       },
-//     });
-
-//     if (user) {
-//       const books = user.user_books.map((book) => book.books.name);
-//       const bookString = books.length > 0 ? books.join(", ") : "none";
-
-//       res.status(200).json({
-//         message: `Email: ${user.email}, Books: ${bookString}`,
-//       });
-//     } else {
-//       res.status(404).json({
-//         message: "User does not exist",
-//       });
-//     }
-
-//     await prisma.$disconnect();
-//   } else {
-//     res.setHeader("Allow", "POST");
-//     res.status(405).end("Method Not Allowed");
-//   }
-// }
-
-
-
 import { NextApiRequest, NextApiResponse } from "next"; 
 import { PrismaClient } from "@prisma/client";
 
@@ -163,3 +105,55 @@ if (user) {
 
 await prisma.$disconnect();
 } else { res.setHeader("Allow", "POST"); res.status(405).end("Method Not Allowed"); } }
+
+
+
+//4th
+// import { NextApiRequest, NextApiResponse } from "next";
+// import { PrismaClient } from "@prisma/client";
+
+// interface IFormData {
+//   email: string;
+// }
+
+// export default async function submitForm(
+//   req: NextApiRequest,
+//   res: NextApiResponse
+// ) {
+//   if (req.method === "POST") {
+//     const formData: IFormData = req.body;
+
+//     const prisma = new PrismaClient();
+
+//     const user = await prisma.user.findUnique({
+//       where: {
+//         email: formData.email,
+//       },
+//       include: {
+//         user_books: {
+//           include: {
+//             books: true,
+//           },
+//         },
+//       },
+//     });
+
+//     if (user) {
+//       const books = user.user_books.map((book) => book.books.name);
+//       const bookString = books.length > 0 ? books.join(", ") : "none";
+
+//       res.status(200).json({
+//         message: `Email: ${user.email}, Books: ${bookString}`,
+//       });
+//     } else {
+//       res.status(404).json({
+//         message: "User does not exist",
+//       });
+//     }
+
+//     await prisma.$disconnect();
+//   } else {
+//     res.setHeader("Allow", "POST");
+//     res.status(405).end("Method Not Allowed");
+//   }
+// }
