@@ -1,15 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-type UserBooksType = {
-  user_books: {
-    books: {
-      id: number;
-      name: string;
-    }[];
-  }[];
-};
 
 const Form = () => {
   const [form, setForm] = useState({
