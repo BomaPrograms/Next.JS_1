@@ -38,3 +38,9 @@ model UserBooks {
   @@id([user_id, books_id])
   @@unique([user_id, books_id])
 }
+
+model userEmail {
+  id        Int      @id @default(autoincrement())
+  email     String
+  createdAt DateTime @default(now())
+}
