@@ -93,10 +93,6 @@ export default async function submitForm(
       },
     });
 
-    if (user) {
-      const books = user.userBooks.map((Book) => Book.Book.name);
-      const bookString = books.length > 0 ? books.join(", ") : "none";
-
       res.status(200).json({
         message: `Email: ${user.email}, Books: ${bookString}`,
       });
@@ -112,5 +108,3 @@ export default async function submitForm(
     res.status(405).end("Method Not Allowed");
   }
 }
-
-//4th
