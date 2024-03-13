@@ -120,6 +120,7 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 interface IFormData {
+  bookId: any;
   name: string;
   age: string;
   dob: string;
@@ -137,7 +138,7 @@ export default async function submitForm(
     try {
       // Create a new book if it doesn't exist
       const book = await prisma.book.upsert({
-        where: { name: formData.bookName },
+        where: { id: formData.bookId },
         update: {},
         create: { name: formData.bookName },
       });
