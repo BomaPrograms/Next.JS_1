@@ -64,11 +64,67 @@
 // // export default handleFormSubmission;
 
 // //3rd Form submission handling with Next.js and Prisma ORM
+// import { NextApiRequest, NextApiResponse } from "next";
+// import { PrismaClient } from "@prisma/client";
+
+// interface IFormData {
+//   email: string;
+// }
+
+// export default async function submitForm(
+//   req: NextApiRequest,
+//   res: NextApiResponse
+// ) {
+//   if (req.method === "POST") {
+//     const formData: IFormData = req.body;
+
+//     const prisma = new PrismaClient();
+
+//     const user = await prisma.user.findUnique({
+//       where: {
+//         email: formData.email,
+//       },
+//       include: {
+//         userBooks: {
+//           include: {
+//             Book: true,
+//           },
+//         },
+//       },
+//     });
+
+//     if (user) {
+//       const books = user.userBooks.map((Book) => Book.Book.name);
+//       const bookString = books.length > 0 ? books.join(", ") : "none";
+
+//       res.status(200).json({
+//         message: `Email: ${user.email}, Books: ${bookString}`,
+//       });
+//     } else {
+//       res.status(404).json({
+//         message: "User does not exist",
+//       });
+//     }
+
+//     await prisma.$disconnect();
+//   } else {
+//     res.setHeader("Allow", "POST");
+//     res.status(405).end("Method Not Allowed");
+//   }
+// }
+
+//4th
 import { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
 
+const prisma = new PrismaClient();
+
 interface IFormData {
+  name: string;
+  age: string;
+  dob: string;
   email: string;
+  bookName: string;
 }
 
 export default async function submitForm(
@@ -78,31 +134,41 @@ export default async function submitForm(
   if (req.method === "POST") {
     const formData: IFormData = req.body;
 
-    const prisma = new PrismaClient();
+    try {
+      // Create a new book if it doesn't exist
+      const book = await prisma.book.upsert({
+        where: { name: formData.bookName },
+        update: {},
+        create: { name: formData.bookName },
+      });
 
-    const user = await prisma.user.findUnique({
-      where: {
-        email: formData.email,
-      },
-      include: {
-        userBooks: {
-          include: {
-            Book: true,
+      // Create a new user with the selected book
+      const newUser = await prisma.user.create({
+        data: {
+          name: formData.name,
+          age: parseInt(formData.age),
+          dob: new Date(formData.dob),
+          email: formData.email,
+          userBooks: {
+            create: {
+              Book: {
+                connect: { id: book.id },
+              },
+            },
           },
         },
-      },
-    });
+      });
 
       res.status(200).json({
-        message: `Email: ${user.email}, Books: ${bookString}`,
+        message: `User "${newUser.name}" has been added.`,
+        id: newUser.id,
       });
-    } else {
-      res.status(404).json({
-        message: "User does not exist",
-      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Failed to add user." });
+    } finally {
+      await prisma.$disconnect();
     }
-
-    await prisma.$disconnect();
   } else {
     res.setHeader("Allow", "POST");
     res.status(405).end("Method Not Allowed");
