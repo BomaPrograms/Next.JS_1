@@ -1,4 +1,4 @@
-// 1st
+// 1st Form submission handling using fs module
 // import fs from "fs";
 
 // // Define the API route handler function
@@ -27,9 +27,7 @@
 // }
 // export default handleFormSubmission;
 
-
-
-//2nd
+//2nd Form submission handling using Prisma ORM
 // import { PrismaClient } from "@prisma/client";
 
 // const prisma = new PrismaClient();
@@ -65,43 +63,54 @@
 // }
 // // export default handleFormSubmission;
 
-
-//3rd
-import { NextApiRequest, NextApiResponse } from "next"; 
+// //3rd Form submission handling with Next.js and Prisma ORM
+import { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
 
-interface IFormData { email: string; }
-
-export default async function submitForm(req: NextApiRequest, res: NextApiResponse) { 
-  if (req.method === "POST") { const formData: IFormData = req.body;
-
-const prisma = new PrismaClient();
-
-const user = await prisma.user.findUnique({
-  where: {
-    email: formData.email,
-  },
-  include: {
-    user_books: {
-      include: {
-        books: true,
-      },
-    },
-  },
-});
-
-if (user) {
-  const books = user.user_books.map((book) => book.books.name);
-  const bookString = books.length > 0 ? books.join(", ") : "none";
-
-  res.status(200).json({
-    message: `Email: ${user.email}, Books: ${bookString}`,
-  });
-} else {
-  res.status(404).json({
-    message: "User does not exist",
-  });
+interface IFormData {
+  email: string;
 }
 
-await prisma.$disconnect();
-} else { res.setHeader("Allow", "POST"); res.status(405).end("Method Not Allowed"); } }
+export default async function submitForm(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  if (req.method === "POST") {
+    const formData: IFormData = req.body;
+
+    const prisma = new PrismaClient();
+
+    const user = await prisma.user.findUnique({
+      where: {
+        email: formData.email,
+      },
+      include: {
+        userBooks: {
+          include: {
+            Book: true,
+          },
+        },
+      },
+    });
+
+    if (user) {
+      const books = user.userBooks.map((Book) => Book.Book.name);
+      const bookString = books.length > 0 ? books.join(", ") : "none";
+
+      res.status(200).json({
+        message: `Email: ${user.email}, Books: ${bookString}`,
+      });
+    } else {
+      res.status(404).json({
+        message: "User does not exist",
+      });
+    }
+
+    await prisma.$disconnect();
+  } else {
+    res.setHeader("Allow", "POST");
+    res.status(405).end("Method Not Allowed");
+  }
+}
+
+//4th
