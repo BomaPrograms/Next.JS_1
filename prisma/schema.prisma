@@ -8,29 +8,28 @@ datasource db {
 }
 
 model User {
-  id         Int         @id @default(autoincrement())
-  name       String
-  age        Int
-  dob        DateTime
-  email      String      @unique
-  info       String?
-  user_books UserBooks[]
+  id       Int      @id @default(autoincrement())
+  name     String
+  age      Int
+  dob      DateTime
+  email    String   @unique
+  userBooks UserBook[]
 }
 
-model Books {
-  id        Int         @id @default(autoincrement())
-  name      String
-  UserBooks UserBooks[]
+model Book {
+  id          Int      @id @default(autoincrement())
+  name        String
+  userBooks    UserBook[]
 }
 
-model UserBooks {
-  user_id  Int
-  books_id Int
-  books    Books @relation(fields: [books_id], references: [id])
-  user     User  @relation(fields: [user_id], references: [id])
+model UserBook {
+  User_id  Int
+  Book_id Int
+  User     User  @relation(fields: [User_id], references: [id])
+  Book    Book  @relation(fields: [Book_id], references: [id])
 
-  @@id([user_id, books_id])
-  @@unique([user_id, books_id])
+  @@id([User_id, Book_id])
+  @@unique([User_id, Book_id])
 }
 
 model userEmail {

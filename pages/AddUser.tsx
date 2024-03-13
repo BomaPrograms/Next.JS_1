@@ -11,42 +11,47 @@ const AddUser: React.FC = () => {
   const [email, setEmail] = useState("");
   const [info, setInfo] = useState("");
   const [bookId, setBookId] = useState("");
+  const [bookName, setBookName] = useState("");
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const handleSubmit = async (e: React.FormEvent) => {
-      e.preventDefault();
+    try {
+      // Create a new book if it doesn't exist
+      const book = await prisma.book.upsert({
+        where: { name: bookName },
+        update: {},
+        create: { name: bookName },
+      });
 
-      try {
-        const newUser = await prisma.user.create({
-          data: {
-            name,
-            age: parseInt(age),
-            dob: new Date(dob),
-            email,
-            info,
-            user_books: {
-              create: {
-                books_id: parseInt(bookId),
+      // Create a new user with the selected book
+      const newUser = await prisma.user.create({
+        data: {
+          name,
+          age: parseInt(age),
+          dob: new Date(dob),
+          email,
+          info,
+          user_books: {
+            create: {
+              books: {
+                connect: { id: book.id },
               },
             },
           },
-        });
+        },
+      });
 
-        // Display a success message
-        alert(`User "${newUser.name}" has been added.`);
+      // Display a success message
+      alert(`User "${newUser.name}" has been added.`);
 
-        // Redirect to the newly created user's page
-        router.push(`/users/${newUser.id}`);
-      } catch (error) {
-        console.error(error);
-        alert("An error occurred while adding the user.");
-      }
-    };
-
-    router.push("/");
+      // Redirect to the newly created user's page
+      router.push(`/users/${newUser.id}`);
+    } catch (error) {
+      console.error(error);
+      alert("An error occurred while adding the user.");
+    }
   };
 
   return (
@@ -105,6 +110,16 @@ const AddUser: React.FC = () => {
             type="number"
             value={bookId}
             onChange={(e) => setBookId(e.target.value)}
+          />
+        </label>
+        <br />
+        <br />
+        <label>
+          Book Name:
+          <input
+            type="text"
+            value={bookName}
+            onChange={(e) => setBookName(e.target.value)}
           />
         </label>
         <br />

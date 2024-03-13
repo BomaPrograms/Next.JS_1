@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-
-const Form = () => {
+const Form: React.FC = () => {
   const [form, setForm] = useState({
     email: "",
   });
@@ -63,8 +62,10 @@ const Form = () => {
           name="email"
           value={form.email}
           onChange={handleInputChange}
+          placeholder="Type email here"
         />
         {emailError && <p style={{ color: "red" }}>{emailError}</p>}
+        <br />
         <br />
         <button className="l_submit" type="submit">
           Submit
