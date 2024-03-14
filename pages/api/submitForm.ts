@@ -121,11 +121,10 @@ const prisma = new PrismaClient();
 
 interface IFormData {
   name: string;
-  age: string;
   dob: string;
+  age: number;
   email: string;
-  info: string;
-  id: number
+  id: number;
   bookName: string;
 } 
 
@@ -148,15 +147,11 @@ export default async function submitForm(
       const newUser = await prisma.user.create({
         data: {
           name: formData.name,
-          age: parseInt(formData.age),
           dob: new Date(formData.dob),
+          age: formData.age,
           email: formData.email,
           userBooks: {
-            create: {
-              Book: {
-                connect: { id: book.id },
-              },
-            },
+            connect: { id: book.id },
           },
         },
       });
