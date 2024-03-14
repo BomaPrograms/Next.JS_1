@@ -3,11 +3,13 @@ import { useRouter } from "next/router";
 
 const AddUser: React.FC = () => {
   const [name, setName] = useState("");
+  const [id, setId] = useState(0);
   const [age, setAge] = useState(0);
   const [dob, setDob] = useState("");
   const [email, setEmail] = useState("");
   const [bookName, setBookName] = useState("");
   const router = useRouter();
+  const [response, setResponse] = useState<{ message: string } | null>(null);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -20,12 +22,15 @@ const AddUser: React.FC = () => {
         },
         body: JSON.stringify({
           name,
+        id,
           age,
           dob,
           email,
           bookName,
         }),
       });
+
+      setResponse(response);
 
       if (res.ok) {
         const { message, id } = await res.json();
@@ -44,6 +49,16 @@ const AddUser: React.FC = () => {
     <div>
       <h1>Add User</h1>
       <form onSubmit={handleSubmit}>
+        <label>
+          Id:
+          <input
+            type="number"
+            value={id}
+            onChange={(e) => setId(parseInt(e.target.value))}
+          />
+        </label>
+        <br />
+        <br />
         <label>
           Name:
           <input
@@ -96,6 +111,14 @@ const AddUser: React.FC = () => {
         <br />
         <button type="submit">Add User</button>
       </form>
+      {Response && Response.message ? (
+        <div>
+          <h2>Response:</h2>
+          <p>{Response.message}</p>
+        </div>
+      ) : (
+        <p>Waiting for response...</p>
+      )}
     </div>
   );
 };
