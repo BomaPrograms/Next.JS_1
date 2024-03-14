@@ -114,19 +114,22 @@
 // }
 
 //4th
+// AddUser.tsx
+// submitForm.ts
 import { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
 interface IFormData {
-  bookId: any;
   name: string;
   age: string;
   dob: string;
   email: string;
+  info: string;
+  id: number
   bookName: string;
-}
+} 
 
 export default async function submitForm(
   req: NextApiRequest,
@@ -138,7 +141,7 @@ export default async function submitForm(
     try {
       // Create a new book if it doesn't exist
       const book = await prisma.book.upsert({
-        where: { id: formData.bookId },
+        where: { id: formData.id },
         update: {},
         create: { name: formData.bookName },
       });
@@ -150,6 +153,7 @@ export default async function submitForm(
           age: parseInt(formData.age),
           dob: new Date(formData.dob),
           email: formData.email,
+
           userBooks: {
             create: {
               Book: {

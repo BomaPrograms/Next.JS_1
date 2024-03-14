@@ -22,7 +22,7 @@ const AddUser: React.FC = () => {
         },
         body: JSON.stringify({
           name,
-        id,
+          id,
           age,
           dob,
           email,
@@ -37,7 +37,9 @@ const AddUser: React.FC = () => {
         alert(message);
         router.push(`/users/${id}`);
       } else {
-        alert("An error occurred while adding the user.");
+        const errorData = await res.json();
+        console.error(errorData);
+        alert("An error occurred while adding the user: " + errorData.error);
       }
     } catch (error) {
       console.error(error);
@@ -111,10 +113,10 @@ const AddUser: React.FC = () => {
         <br />
         <button type="submit">Add User</button>
       </form>
-      {Response && Response.message ? (
+      {response ? (
         <div>
           <h2>Response:</h2>
-          <p>{Response.message}</p>
+          <p>{response.message}</p>
         </div>
       ) : (
         <p>Waiting for response...</p>
