@@ -114,8 +114,6 @@
 // }
 
 //4th
-// AddUser.tsx
-// submitForm.ts
 import { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
 
@@ -153,7 +151,6 @@ export default async function submitForm(
           age: parseInt(formData.age),
           dob: new Date(formData.dob),
           email: formData.email,
-
           userBooks: {
             create: {
               Book: {
