@@ -151,7 +151,11 @@ export default async function submitForm(
           age: formData.age,
           email: formData.email,
           userBooks: {
-            connect: { id: book.id },
+            create: {
+              Book: {
+                connect: { id: book.id },
+              },
+            },
           },
         },
       });
