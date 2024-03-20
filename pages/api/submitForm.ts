@@ -1,4 +1,4 @@
-// 1st Form submission handling using fs module
+// // 1st Form submission handling using fs module
 // import fs from "fs";
 
 // // Define the API route handler function
@@ -27,7 +27,7 @@
 // }
 // export default handleFormSubmission;
 
-//2nd Form submission handling using Prisma ORM
+// // 2nd Form submission handling using Prisma ORM
 // import { PrismaClient } from "@prisma/client";
 
 // const prisma = new PrismaClient();
@@ -63,7 +63,7 @@
 // }
 // // export default handleFormSubmission;
 
-// //3rd Form submission handling with Next.js and Prisma ORM
+// // //3rd Form submission handling with Next.js and Prisma ORM
 // import { NextApiRequest, NextApiResponse } from "next";
 // import { PrismaClient } from "@prisma/client";
 
@@ -113,63 +113,63 @@
 //   }
 // }
 
-//4th
-import { NextApiRequest, NextApiResponse } from "next";
-import { PrismaClient } from "@prisma/client";
+// //4th
+// import { NextApiRequest, NextApiResponse } from "next";
+// import { PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient();
+// const prisma = new PrismaClient();
 
-interface IFormData {
-  name: string;
-  dob: string;
-  age: number;
-  email: string;
-  id: number;
-  bookName: string;
-}
+// interface IFormData {
+//   name: string;
+//   dob: string;
+//   age: number;
+//   email: string;
+//   id: number;
+//   bookName: string;
+// }
 
-export default async function submitForm(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  if (req.method === "POST") {
-    const formData: IFormData = req.body;
+// export default async function submitForm(
+//   req: NextApiRequest,
+//   res: NextApiResponse
+// ) {
+//   if (req.method === "POST") {
+//     const formData: IFormData = req.body;
 
-    try {
-      const book = await prisma.book.upsert({
-        where: { id: formData.id },
-        update: {},
-        create: { name: formData.bookName },
-      });
+//     try {
+//       const book = await prisma.book.upsert({
+//         where: { id: formData.id },
+//         update: {},
+//         create: { name: formData.bookName },
+//       });
 
-      const newUser = await prisma.user.create({
-        data: {
-          name: formData.name,
-          dob: new Date(formData.dob),
-          age: formData.age,
-          email: formData.email,
-          userBooks: {
-            create: {
-              Book: {
-                connect: { id: book.id },
-              },
-            },
-          },
-        },
-      });
+//       const newUser = await prisma.user.create({
+//         data: {
+//           name: formData.name,
+//           dob: new Date(formData.dob),
+//           age: formData.age,
+//           email: formData.email,
+//           userBooks: {
+//             create: {
+//               Book: {
+//                 connect: { id: book.id },
+//               },
+//             },
+//           },
+//         },
+//       });
 
-      res.status(200).json({
-        message: `User "${newUser.name}" has been added.`,
-        id: newUser.id,
-      });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: "Failed to add user." });
-    } finally {
-      await prisma.$disconnect();
-    }
-  } else {
-    res.setHeader("Allow", "POST");
-    res.status(405).end("Method Not Allowed");
-  }
-}
+//       res.status(200).json({
+//         message: `User "${newUser.name}" has been added.`,
+//         id: newUser.id,
+//       });
+//     } catch (error) {
+//       console.error(error);
+//       res.status(500).json({ error: "Failed to add user." });
+//     } finally {
+//       await prisma.$disconnect();
+//     }
+//   } else {
+//     res.setHeader("Allow", "POST");
+//     res.status(405).end("Method Not Allowed");
+//   }
+// }

@@ -5,7 +5,6 @@ const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 const AddUser = () => {
   const [user, setUser] = useState({
-    id: "",
     name: "",
     age: "",
     email: "",
@@ -57,7 +56,6 @@ const AddUser = () => {
         const responseData = await response.json();
         setResponse(responseData);
         setUser({
-          id: "",
           name: "",
           age: "",
           email: "",
