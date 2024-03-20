@@ -68,7 +68,7 @@ const Form: React.FC = () => {
         <br />
         <br />
         <button className="l_submit" type="submit">
-          Submit
+          Search
         </button>
       </form>
       {response ? (

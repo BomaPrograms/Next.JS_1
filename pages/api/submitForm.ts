@@ -126,7 +126,7 @@ interface IFormData {
   email: string;
   id: number;
   bookName: string;
-} 
+}
 
 export default async function submitForm(
   req: NextApiRequest,
@@ -136,14 +136,12 @@ export default async function submitForm(
     const formData: IFormData = req.body;
 
     try {
-      // Create a new book if it doesn't exist
       const book = await prisma.book.upsert({
         where: { id: formData.id },
         update: {},
         create: { name: formData.bookName },
       });
 
-      // Create a new user with the selected book
       const newUser = await prisma.user.create({
         data: {
           name: formData.name,
