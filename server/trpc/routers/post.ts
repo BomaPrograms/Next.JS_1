@@ -33,4 +33,43 @@ export const postRouter = createTRPCRouter({
             orderBy: { createdAt: "desc" },
         });
     }),
+
+  getUserBookes: publicProcedure
+    .input(
+      z.object({
+        email: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const user = await ctx.db.user.findFirst({
+        where: {
+          email: input.email,
+        },
+      });
+      if (user == null) {
+        throw new Error("user not found");
+      }
+
+      const books = ctx.db.book.findMany({
+        where: {
+          userBooks: {
+            every: {
+              User_id: user.id,
+            },
+          },
+        },
+      });
+
+      return books;
+    }),
+
+    getNewUsers: publicProcedure
+    .input(
+      z.object({
+        user: z.string(),
+      })
+    )
+    .mutation(async ({ctx, input})) => {
+
+    }
 });
