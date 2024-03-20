@@ -1,39 +1,46 @@
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+    provider = "mysql"
+    url      = env("DATABASE_URL")
 }
 
 model User {
-  id       Int      @id @default(autoincrement())
-  name     String
-  dob      DateTime
-  age      Int
-  email    String   @unique
-  userBooks UserBook[]
+    id        Int        @id @default(autoincrement())
+    name      String
+    dob       DateTime
+    age       Int
+    email     String     @unique
+    userBooks UserBook[]
 }
 
 model Book {
-  id          Int      @id @default(autoincrement())
-  name        String
-  userBooks    UserBook[]
+    id        Int        @id @default(autoincrement())
+    name      String
+    userBooks UserBook[]
 }
 
 model UserBook {
-  User_id  Int
-  Book_id Int
-  User     User  @relation(fields: [User_id], references: [id])
-  Book    Book  @relation(fields: [Book_id], references: [id])
+    User_id Int
+    Book_id Int
+    User    User @relation(fields: [User_id], references: [id])
+    Book    Book @relation(fields: [Book_id], references: [id])
 
-  @@id([User_id, Book_id])
-  @@unique([User_id, Book_id])
+    @@id([User_id, Book_id])
+    @@unique([User_id, Book_id])
 }
 
 model userEmail {
-  id        Int      @id @default(autoincrement())
-  email     String
-  createdAt DateTime @default(now())
+    id        Int      @id @default(autoincrement())
+    email     String
+    createdAt DateTime @default(now())
+}
+
+// Example by dan
+model Post {
+    id        Int      @id @default(autoincrement())
+    title     String
+    createdAt DateTime @default(now())
 }
