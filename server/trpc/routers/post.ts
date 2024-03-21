@@ -62,6 +62,7 @@ export const postRouter = createTRPCRouter({
 
       return books;
     }),
+});
 
     get: publicProcedure
     .input(
