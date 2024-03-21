@@ -64,23 +64,6 @@ export const postRouter = createTRPCRouter({
     }),
 });
 
-    get: publicProcedure
-    .input(
-      z.object({
-        user: z.string(),
-      })
-    )
-    .mutation(async ({ctx, input})) => {
-      const newUser = await ctx.db.newUser.create({
-        where: {
-          name: input.name,
-        },
-        if (newUser == push) {
-          throw new Error ("user cannot be added.");
-        }
-        const newUserId = ctx.db.newUserId.create({
-          
-        })
-      })
-    }
-});
+
+
+
