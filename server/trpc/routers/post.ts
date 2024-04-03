@@ -76,12 +76,12 @@ export const postRouter = createTRPCRouter({
         data: {
           name: input.name,
           email: input.email,
-          age: input.age,
         },
       });
 
   return user;
 }),
+
 });
 
 

@@ -39,6 +39,41 @@ const DanPost: React.FC = () => {
     console.log(data);
   };
 
+  const handleUserSubmit = async(e: React.FormEvent<HTMLFormElement>)=>{
+    e.preventDefault();
+    const data = await adduser.mutateAsync({
+      name: "",
+      dob: "",
+      age: "",
+      email: "",
+    });
+    console.log(data)
+  }
+
+  handleUserSubmit();
+
+
+
+  const prisma = new PrismaClient();
+
+  const addUserToDatabase = async () => {
+    try {
+      await prisma.user.create({
+        data: {
+          dob: "",
+          email: "",
+          name: "",
+          age: "",
+        },
+      });
+      console.log("User added successfully!");
+    } catch (error) {
+      console.error("Error adding user:", error);
+    }
+  };
+
+  addUserToDatabase();
+
   return (
     <div className="flex flex-col gap-3">
       <h1>search by emaill</h1>
