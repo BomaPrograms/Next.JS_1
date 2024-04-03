@@ -10,7 +10,6 @@ export const userRouter = createTRPCRouter({
         name: "",
         dob: "",
         age: "",
-        bookName: "",
       },
     };
   }),

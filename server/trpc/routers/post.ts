@@ -34,7 +34,7 @@ export const postRouter = createTRPCRouter({
     });
   }),
 
-  getUserBookes: publicProcedure
+  getUserBooks: publicProcedure
     .input(
       z.object({
         email: z.string(),
@@ -67,20 +67,43 @@ export const postRouter = createTRPCRouter({
     .input(
       z.object({
         name: z.string(),
-        email: z.string(),
+        dob: z.string(),
         age: z.number(),
+        email: z.string().email(),
+        bookName: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const user = await ctx.db.user.create({
+      const addUser = await ctx.db.user.create({
         data: {
           name: input.name,
+          dob:new Date(input.dob),
+          age: input.age,
           email: input.email,
         },
       });
 
-  return user;
-}),
+      return addUser;
+    }),
+
+  //book page
+  newBook: publicProcedure
+    .input(
+      z.object({
+        bookId: z.number(),
+        bookName: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const newBook = await ctx.db.user.create({
+        data: {
+          bookId: input.bookId,
+          bookName: input.bookName,
+        },
+      });
+
+      return newBook ;
+    }),
 
 });
 

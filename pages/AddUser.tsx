@@ -15,7 +15,7 @@ const AddUser = () => {
   const [response, setResponse] = useState<{ message: string } | null>(null);
   const [emailError, setEmailError] = useState("");
 
-  const handleInputChange = (e: { target: { name: string; value: string; }; }) => {
+  const handleInputChange = (e: { target: { name: string; value: string; }; }) => { 
     setUser({ ...user, [e.target.name]: e.target.value });
 
     if (e.target.name === "email" && !EMAIL_REGEX.test(e.target.value)) {
