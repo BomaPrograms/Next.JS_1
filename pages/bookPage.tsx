@@ -1,60 +1,70 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { api } from "../utils/api";
-  
-  const book = api.post.newBook.useMutation();
 
-const newBook = () => {
+const NewBook = () => {
+  const mutation = api.post.newBook.useMutation();
 
-  const [books, setBooks] = useState({
-    bookId: "",
+  const [book, setBook] = useState({
+    bookId: 0,
     bookName: "",
   });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: { target: { name: any; value: any; }; }) => {
     const { name, value } = e.target;
-    setBooks({ ...books, [name]: value });
+    setBook({ ...book, [name]: value });
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
-    const data = await newBook.mutateAsync({
-      bookId: books.bookId,
-      bookName: books.bookName,
-    });
-    console.log(data);
+    try {
+      const { data, error } = await mutation.mutateAsync({
+        bookId: Number(book.bookId),
+        bookName: book.bookName,
+      });
+
+      if (error) {
+        console.error("Error adding book:", error);
+      } else if (data) {
+        console.log("Book added successfully:", data);
+        // Optionally update UI with the newly added book
+      }
+    } catch (err) {
+      console.error("Something went wrong:", err);
+    }
   };
 
   return (
     <div>
       <h1>Create New Book</h1>
       <form onSubmit={handleSubmit}>
-        <label className="l_bookId">
+        <label>
           Book Id:
           <input
-            className="i_bookId"
             type="number"
             name="bookId"
-            value={books.bookId}
+            value={book.bookId}
             onChange={handleInputChange}
             placeholder="Book Id"
           />
         </label>
         <br />
         <br />
-        <label className="l_bookName">
+        <label>
           Book Name:
           <input
-            className="i_bookName"
             type="text"
             name="bookName"
-            value={books.bookName}
+            value={book.bookName}
             onChange={handleInputChange}
             placeholder="Book Name"
           />
         </label>
+        <br />
+        <br />
+        <button type="submit">Create Book</button>
       </form>
     </div>
   );
 };
 
-export default newBook;
+export default NewBook;

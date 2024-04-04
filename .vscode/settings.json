@@ -1,4 +1,7 @@
 {
   "editor.fontFamily": "Courier New",
-  "editor.cursorBlinking": "expand"
+  "editor.cursorBlinking": "expand",
+  "editor.experimentalInlineEdit.fontFamily": "Courier New",
+  "editor.experimentalInlineEdit.enabled": false,
+  "editor.codeLensFontFamily": "Courier New"
 }

@@ -1,6 +1,8 @@
 import { z } from "zod";
 
 import { createTRPCRouter, publicProcedure } from "../trpc";
+import { userAgent } from "next/server";
+import { contextProps } from "@trpc/react-query/shared";
 
 export const postRouter = createTRPCRouter({
   hello: publicProcedure
@@ -77,7 +79,7 @@ export const postRouter = createTRPCRouter({
       const addUser = await ctx.db.user.create({
         data: {
           name: input.name,
-          dob:new Date(input.dob),
+          dob: new Date(input.dob),
           age: input.age,
           email: input.email,
         },
@@ -95,15 +97,39 @@ export const postRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const newBook = await ctx.db.user.create({
+      const newBook = await ctx.db.book.create({
         data: {
-          bookId: input.bookId,
-          bookName: input.bookName,
+          id: Number(input.bookId),
+          name: input.bookName,
         },
       });
 
-      return newBook ;
+      return newBook;
     }),
+
+  userBook: publicProcedure
+    .input(
+      z.object({
+        User_id: z.number(),
+        Book_id: z.number(),
+        User: z.string(),
+        Book: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const userBook = await ctx.db.userBook.create({
+        data: {
+          User_id: Number(input.User_id),
+          Book_id: Number(input.Book_id),
+          // User: input.User,
+          // Book: input.Book,
+        },
+      });
+
+      return userBook;
+    }),
+
+    
 
 });
 
