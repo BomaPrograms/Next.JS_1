@@ -65,27 +65,28 @@ export const postRouter = createTRPCRouter({
       return books;
     }),
 
-  addUser: publicProcedure
+  user: publicProcedure
     .input(
       z.object({
+        id: z.number(),
         name: z.string(),
         dob: z.string(),
         age: z.number(),
         email: z.string().email(),
-        bookName: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const addUser = await ctx.db.user.create({
+      const user = await ctx.db.user.create({
         data: {
+          id: Number(input.id),
           name: input.name,
           dob: new Date(input.dob),
-          age: input.age,
+          age: Number(input.age),
           email: input.email,
         },
       });
 
-      return addUser;
+      return user;
     }),
 
   //book page
@@ -112,8 +113,6 @@ export const postRouter = createTRPCRouter({
       z.object({
         User_id: z.number(),
         Book_id: z.number(),
-        User: z.string(),
-        Book: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -121,15 +120,29 @@ export const postRouter = createTRPCRouter({
         data: {
           User_id: Number(input.User_id),
           Book_id: Number(input.Book_id),
-          // User: input.User,
-          // Book: input.Book,
         },
       });
 
       return userBook;
     }),
 
-    
+    userEmail: publicProcedure
+      .input(
+        z.object({
+          Id: z.number(),
+          Email: z.string(),
+        })
+      )
+    .mutation(async ({ ctx, input }) => {
+      const userEmail = await ctx.db.userEmail.findFirst({
+        where: {
+          id: Number(input.Id),
+          email: input.Email
+        },
+      });
+
+      return userEmail;
+    }),  
 
 });
 

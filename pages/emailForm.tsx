@@ -47,7 +47,7 @@ const Form: React.FC = () => {
     const data = await response.json();
     setResponse(data);
   };
-
+ 
   return (
     <div className="contain">
       <h1 className="headies">USER EMAIL FORM</h1>
@@ -61,7 +61,7 @@ const Form: React.FC = () => {
           type="email"
           name="email"
           value={form.email}
-          onChange={handleInputChange}
+          onChange={handleInputChange} 
           placeholder="Type email here"
         />
         {emailError && <p style={{ color: "red" }}>{emailError}</p>}

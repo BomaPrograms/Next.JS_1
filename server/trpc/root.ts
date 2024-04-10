@@ -1,8 +1,10 @@
 import { postRouter } from "./routers/post";
 import { userRouter } from "./routers/users";
-import { addUserRouter } from "./routers/addusers";
+import { userPageRouter } from "./routers/userPage";
 import { bookPageRouter } from "./routers/bookPage";
 import { userbookPageRouter } from "./routers/userbookPage";
+import { userEmailPageRouter } from "./routers/userEmailPage";
+import { listBookPageRouter } from "./routers/listBookPage";
 import { createTRPCRouter, createCallerFactory } from "./trpc";
 
 /**
@@ -13,9 +15,10 @@ import { createTRPCRouter, createCallerFactory } from "./trpc";
 export const appRouter = createTRPCRouter({
     post: postRouter,
     user: userRouter,
-    adduser: addUserRouter,
+    userPage: userPageRouter,
     bookPage: bookPageRouter,
     userbookPage: userbookPageRouter,
+    userEmailPage: userEmailPageRouter,
 });
 
 // export type definition of API

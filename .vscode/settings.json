@@ -3,5 +3,9 @@
   "editor.cursorBlinking": "expand",
   "editor.experimentalInlineEdit.fontFamily": "Courier New",
   "editor.experimentalInlineEdit.enabled": false,
-  "editor.codeLensFontFamily": "Courier New"
+  "editor.codeLensFontFamily": "",
+  "terminal.integrated.fontFamily": "Courier New",
+  "editor.inlayHints.fontFamily": "Courier New",
+  "notebook.output.fontFamily": "Courier New",
+  "editor.inlineSuggest.fontFamily": "Courier New"
 }

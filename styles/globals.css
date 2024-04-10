@@ -103,7 +103,7 @@ font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida San
   padding-left: 10px;
   border-radius: 5px;}
 
-.l_email{
+/* .l_email{
   color: white;
   margin-left: 5px;
   padding-left: 5px;
@@ -119,9 +119,9 @@ font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida San
   height: 25px;
   margin-left: 15px;
   padding-left: 10px;
-  border-radius: 5px;}
+  border-radius: 5px;} */
 
-.l_submit{
+/* .l_submit{
   background: slateblue;
   justify-content: center;
   align-items: center;
@@ -133,7 +133,7 @@ font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida San
   border-radius: 50px;
   font-size: larger;
   color: white;
-}
+} */
 
 .l_book{
   color: white;
@@ -151,6 +151,23 @@ font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida San
   margin-left: 15px;
   padding-left: 10px;
   border-radius: 5px;
+}
+
+.l_email {
+  font-weight: bold;
+}
+
+.i_email {
+  padding: 5px;
+  margin-bottom: 10px;
+}
+
+.l_submit {
+  background-color: #007bff;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  cursor: pointer;
 }
 
 .container2{

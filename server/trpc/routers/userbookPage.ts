@@ -4,7 +4,7 @@ import { createTRPCRouter, publicProcedure } from "../trpc";
 
 export const userbookPageRouter = createTRPCRouter({
   getUserBookPage: publicProcedure.query(({ ctx }) => {
-    ctx.db.book;
+    ctx.db.userBook;
     return {
       data: {
         userId: "",

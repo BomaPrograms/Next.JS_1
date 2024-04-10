@@ -1,31 +1,13 @@
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 import { api } from "../utils/api";
-import { PrismaClient } from "@prisma/client";
 
-const DanPost: React.FC = () => {
-  // This will load the latest posts from the server when
-  // the page is loaded. to access the data we do posts.data
-  // trpc also handles refetching of the data automatically
-  // this is how useQuery works
-  const posts = api.post.getLatest.useQuery();
+const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-  // useMutation works differently from useQuery
-  // useQuery is generally used for fetching data
-  // and useMutation is used for updating data
-  // or performing other side effects (side effects meaning
-  // any action that changes something, i.e updating a database)
-  const createPost = api.post.create.useMutation();
-
-  const books = api.post.getUserBooks.useMutation();
-
-  const mutation = api.post.newBook.useMutation();
-
-  const newUser = api.post.user.useMutation(); 
-
-  const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+const newUser = () => {
+  const mutation = api.post.user.useMutation();
 
   const [emailError, setEmailError] = useState("");
-  const [user, setUser] = useState({
+  const [newUser, setNewUser] = useState({
     id: 0,
     name: "",
     dob: "",
@@ -33,14 +15,14 @@ const DanPost: React.FC = () => {
     email: "",
   });
 
-  const handleUserSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
-    const data = await newUser.mutateAsync({
-      id: Number(user.id),
-      age: Number(user.age),
-      dob: user.dob,
-      name: user.name,
-      email: user.email,
+    const data = await mutation.mutateAsync({
+      id: Number(newUser.id),
+      age: Number(newUser.age),
+      dob: newUser.dob,
+      name: newUser.name,
+      email: newUser.email,
     });
     console.log(data);
   };
@@ -48,7 +30,7 @@ const DanPost: React.FC = () => {
   const handleInputChange = (e: {
     target: { name: string; value: string };
   }) => {
-    setUser((oldUser) => {
+    setNewUser((oldUser) => {
       return { ...oldUser, [e.target.name]: e.target.value };
     });
 
@@ -61,13 +43,13 @@ const DanPost: React.FC = () => {
     if (e.target.name === "dob") {
       console.log("dob", e.target.value);
       const age = calculateAge(e.target.value);
-      setUser((oldUser) => {
+      setNewUser((oldUser) => {
         return { ...oldUser, age: age };
       });
     }
   };
 
-  const calculateAge = (dob: string) => {
+  const calculateAge = (dob: string | number | Date) => {
     const dobDate = new Date(dob);
     const ageDiff = Date.now() - dobDate.getTime();
     const ageDate = new Date(ageDiff);
@@ -75,18 +57,27 @@ const DanPost: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col gap-3">
+    <div>
       <h1>create user</h1>
-      <form onSubmit={handleUserSubmit}>
-        <label>email</label>
-        <input name="email" value={user.email} onChange={handleInputChange} />
+      <form onSubmit={handleSubmit}>
+        <label className="l_name">
+            Id:
+            <input className="i_name"
+            type="number"
+            name="id"
+            value={newUser.id}
+            onChange={handleInputChange}
+            placeholder="User Id" />
+        </label>
+        <br />
+        <br />
         <label className="l_name">
           Name:
           <input
             className="i_name"
             type="text"
             name="name"
-            value={user.name}
+            value={newUser.name}
             onChange={handleInputChange}
             placeholder="What is your Name ?"
           />
@@ -99,7 +90,7 @@ const DanPost: React.FC = () => {
             className="i_dob"
             type="date"
             name="dob"
-            value={user.dob}
+            value={newUser.dob}
             onChange={handleInputChange}
             placeholder="Date of Birth"
           />
@@ -112,7 +103,7 @@ const DanPost: React.FC = () => {
             className="i_age"
             type="number"
             name="age"
-            value={user.age}
+            value={newUser.age}
             onChange={handleInputChange}
             placeholder="Age"
           />
@@ -125,7 +116,7 @@ const DanPost: React.FC = () => {
             className="i_email"
             type="email"
             name="email"
-            value={user.email}
+            value={newUser.email}
             onChange={handleInputChange}
             placeholder="Email"
           />
@@ -138,4 +129,4 @@ const DanPost: React.FC = () => {
   );
 };
 
-export default DanPost;
+export default newUser;
