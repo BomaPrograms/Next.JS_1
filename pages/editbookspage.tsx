@@ -47,7 +47,6 @@ const BookDetails = () => {
             type="text"
             value={bookName}
             onChange={(e) => setBookName(e.target.value)}
-            disabled // Disable editing of current book name
           />
         </label>
         <label>
