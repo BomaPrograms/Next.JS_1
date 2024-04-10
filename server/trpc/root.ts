@@ -19,6 +19,7 @@ export const appRouter = createTRPCRouter({
     bookPage: bookPageRouter,
     userbookPage: userbookPageRouter,
     userEmailPage: userEmailPageRouter,
+    ListBookPage: listBookPageRouter,
 });
 
 // export type definition of API
