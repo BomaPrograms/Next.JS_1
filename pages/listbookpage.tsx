@@ -7,14 +7,12 @@ const ListBooksPage: React.FC = () => {
   
   const Query = api.post.listBook.useQuery();
 
-  const link = document.getElementById("myLink");
-
-  if (link) {
-    link.addEventListener("click", function (event) {
-      event.preventDefault(); // Prevent the default behavior of the link
-      window.location.href = "editbookspage.tsx"; // Redirect the user to another page
-    });
-  }
+  const handleLinkClick = (
+    event: React.MouseEvent<HTMLAnchorElement, MouseEvent>
+  ) => {
+    event.preventDefault();
+    window.location.href = "editbookspage";
+  };
 
   return (
     <div>
@@ -25,6 +23,11 @@ const ListBooksPage: React.FC = () => {
           {}
         </div>
       ))}
+      <button>
+        <a href="#" onClick={handleLinkClick}>
+          Go to Edit Books Page
+        </a>
+      </button>
     </div>
   );
 };
