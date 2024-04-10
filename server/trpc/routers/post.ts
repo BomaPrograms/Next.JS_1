@@ -170,8 +170,8 @@ export const postRouter = createTRPCRouter({
     }),
   )
     .mutation(async ({ ctx, input }) => {
-      const editBook = await ctx.db.book.findFirst({
-        where: {
+      const editBook = await ctx.db.book.create({
+        data: {
           id: Number(input.bookId),
           name: input.bookName,
         },

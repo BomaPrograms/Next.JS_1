@@ -19,7 +19,7 @@ const BookDetails = () => {
 
       if (result && "error" in result) {
         console.error("Error updating book:", result.error);
-      } else if (result) {
+      } else if (result && "data" in result) {
         console.log("Book updated successfully:", result.data);
         router.push("/BookList");
       } else {
@@ -34,9 +34,8 @@ const BookDetails = () => {
     event: React.MouseEvent<HTMLAnchorElement, MouseEvent>
   ) => {
     event.preventDefault();
-    router.push("/ListBooksPage"); // Use router.push to navigate to ListBooksPage
+    window.location.href = "listbookpage";
   };
-
   return (
     <div>
       <h1>Edit Book</h1>
