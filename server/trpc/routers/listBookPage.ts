@@ -10,14 +10,5 @@ export const listBookPageRouter = createTRPCRouter({
         bookName: "",
       }],
     };
-  })
-//   updateBook: publicProcedure.mutation(
-//     z.object({
-//       bookId: z.string(),
-//       bookName: z.string(),
-//     }),
-//     ({  }) => {
-//       return { success: true };
-//     }
-//   ),
-// });
+  }),
+});

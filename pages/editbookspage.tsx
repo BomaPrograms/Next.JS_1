@@ -1,26 +1,28 @@
-// pages/BookDetails.tsx
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { api } from "../utils/api";
-// import { AppRouter } from "../server/trpc/root";
 
 const BookDetails = () => {
-  const mutation = api.book.updateBook.useMutation();
+  const mutation = api.post.editBook.useMutation();
   const router = useRouter();
   const bookId = router.query.bookId as string;
   const [newBookName, setNewBookName] = useState("");
 
-  const handleUpdateBook = async () => {
+  const handleUpdateBook = async (e: { preventDefault: () => void }) => {
+    e.preventDefault();
     try {
       const result = await mutation.mutateAsync({
         bookId,
         bookName: newBookName,
       });
-      if ("error" in result) {
+
+      if (result && "error" in result) {
         console.error("Error updating book:", result.error);
-      } else {
+      } else if (result) {
         console.log("Book updated successfully:", result.data);
         router.push("/BookList");
+      } else {
+        console.error("Something went wrong: Result is null or undefined");
       }
     } catch (err) {
       console.error("Something went wrong:", err);

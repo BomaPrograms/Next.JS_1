@@ -1,28 +1,34 @@
-// ListBooksPage.tsx
+// listbookspage.tsx
 
 import React from "react";
 import { api } from "../utils/api";
 
 const ListBooksPage: React.FC = () => {
   
-  const Query = api.post.getLatest.useQuery();
-  const { data: books = [] } = useQuery(["books.list"], {
-    async resolve() {
-      return await api.query.listBooks();
-    },
-  });
+  const Query = api.post.listBook.useQuery();
+
+  const link = document.getElementById("myLink");
+
+  if (link) {
+    link.addEventListener("click", function (event) {
+      event.preventDefault(); // Prevent the default behavior of the link
+      window.location.href = "editbookspage.tsx"; // Redirect the user to another page
+    });
+  }
 
   return (
     <div>
       <h1>All Books</h1>
-      {books.map((book) => (
-        <div key={book.bookId}>
-          <h3>{book.bookName}</h3>
-          {/* Add more book details as needed */}
+      {Query.data?.map((book) => (
+        <div key={book.id}>
+          <h3>{book.name}</h3>
+          {}
         </div>
       ))}
     </div>
   );
 };
+
+  
 
 export default ListBooksPage;
