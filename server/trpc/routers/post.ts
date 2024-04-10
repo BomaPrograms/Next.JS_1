@@ -126,24 +126,41 @@ export const postRouter = createTRPCRouter({
       return userBook;
     }),
 
-    userEmail: publicProcedure
-      .input(
-        z.object({
-          Id: z.number(),
-          Email: z.string(),
-        })
-      )
+  userEmail: publicProcedure
+    .input(
+      z.object({
+        Id: z.number(),
+        Email: z.string(),
+      })
+    )
     .mutation(async ({ ctx, input }) => {
       const userEmail = await ctx.db.userEmail.findFirst({
         where: {
           id: Number(input.Id),
-          email: input.Email
+          email: input.Email,
         },
       });
 
       return userEmail;
-    }),  
+    }),
 
+    listBook: publicProcedure
+      .input(
+        z.object({
+          bookId: z.number(),
+          bookName: z.string(),
+        })
+      )
+    .mutation(async ({ ctx, input }) => {
+      const listBook = await ctx.db.userBook.create({
+        data: {
+          id: Number(input.bookId),
+          name: input.bookName,
+        },
+      });
+
+      return listBook;
+    }),
 });
 
 
