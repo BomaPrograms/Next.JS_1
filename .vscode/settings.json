@@ -3,9 +3,12 @@
   "editor.cursorBlinking": "expand",
   "editor.experimentalInlineEdit.fontFamily": "Courier New",
   "editor.experimentalInlineEdit.enabled": false,
-  "editor.codeLensFontFamily": "",
+  "editor.codeLensFontFamily": "Courier New",
   "terminal.integrated.fontFamily": "Courier New",
   "editor.inlayHints.fontFamily": "Courier New",
   "notebook.output.fontFamily": "Courier New",
-  "editor.inlineSuggest.fontFamily": "Courier New"
+  "editor.inlineSuggest.fontFamily": "Courier New",
+  "scm.inputFontFamily": "Courier New",
+  "chat.editor.fontFamily": "Courier New",
+  "debug.console.fontFamily": "Courier New"
 }
